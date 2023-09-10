@@ -1,0 +1,42 @@
+<form action="" (submit)="submitForm($event)">
+  <div class="mb-3">
+    <label for="searchTerm" class="form-label">Search for images: </label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="What do you wanna search for?"
+      (input)="changeValue($any($event.target).value)"
+    />
+  </div>
+</form>
+
+<pagination-controls
+  (pageChange)="pageChanged($event)"
+  previousLabel="Previous"
+  nextLabel="Next"
+  screenReaderPaginationLabel="Pagination"
+  screenReaderPageLabel="page"
+  screenReaderCurrentLabel="You're on page"
+  *ngIf="totalPages"
+>
+</pagination-controls>
+
+<div class="gallery">
+  <div
+    class="img-container"
+    *ngFor="
+      let img of imgs
+        | paginate
+          : {
+              itemsPerPage: 10,
+              currentPage: pageNum,
+              totalItems: totalPages
+            };
+      let i = index
+    "
+    [class]="'gallery_item_' + (i + 1)"
+    class="gallery_item"
+  >
+    <img [src]="img.urls.small" [alt]="img.description" class="gallery_img" />
+  </div>
+</div>
